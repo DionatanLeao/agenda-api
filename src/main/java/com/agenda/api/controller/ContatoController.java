@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/contatos")
 @RequiredArgsConstructor	
+@CrossOrigin("*")
 public class ContatoController {
 	
 	private final ContatoRepository repository;
@@ -40,9 +42,10 @@ public class ContatoController {
 		repository.deleteById(id);
 	}
 	
-	public void favorite(@PathVariable Integer id, @RequestBody Boolean favorito) {
+	public void favorite(@PathVariable Integer id ) {
 		Optional<Contato> contato = repository.findById(id);
 		contato.ifPresent(c -> {
+			boolean favorito = c.getFavorito() == Boolean.TRUE;
 			c.setFavorito(favorito);
 			repository.save(c);
 		});
