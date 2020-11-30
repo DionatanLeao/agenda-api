@@ -9,6 +9,7 @@ import javax.servlet.http.Part;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,7 @@ import com.agenda.api.repository.ContatoRepository;
 
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequestMapping("/api/contatos")
 @RequiredArgsConstructor
@@ -42,7 +44,8 @@ public class ContatoController {
 
 	public Page<Contato> list(@RequestParam(value = "page", defaultValue = "0") Integer pagina,
 			@RequestParam(value = "size", defaultValue = "10") Integer tamanho) {
-		PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+		Sort sort = Sort.by(Sort.Direction.ASC, "nome");
+		PageRequest pageRequest = PageRequest.of(pagina, tamanho, sort);
 		return repository.findAll(pageRequest);
 	}
 
